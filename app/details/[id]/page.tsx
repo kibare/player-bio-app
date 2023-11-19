@@ -1,7 +1,5 @@
 import React from 'react';
-import Image from 'next/image';
 import { Player } from '@/types/Player';
-import dataset from '@/public/dataset.json'
 import { convertPosition } from '@/utils/position';
 import { capitalizeFirstLetter } from '@/utils/capitalize';
 
@@ -9,13 +7,8 @@ interface PlayerDetailProps {
   player: Player;
 }
 
-function getData(id: Number) {
-  const player = dataset.find((p) => p.id.toString() === id);
-  return player;
-}
-
-export default function PlayerDetail({ params }: { params: { id: Number } }){
-  const player = getData(params.id)
+export default async function PlayerDetail({ params }: { params: { id: Number } }){
+  const player = await getData(params.id)
 
   if (!player) return <p>Loading...</p>;
 
@@ -42,3 +35,13 @@ export default function PlayerDetail({ params }: { params: { id: Number } }){
     </div>
   );
 };
+
+async function getData(id: Number) {
+  const res = await fetch(`http://localhost:3000/api/${id}`)
+ 
+  if (!res.ok) {
+    throw new Error('Failed to fetch data')
+  }
+ 
+  return res.json()
+}

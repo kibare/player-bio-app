@@ -1,19 +1,40 @@
-"use client";
-import React, { useState } from 'react';
-import Link from 'next/link'; // Import Link dari next/link
+"use client"
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import PlayerCard from '@/components/PlayerCard';
 import { Player } from '../types/Player';
 
-const PlayerList = ({ players }: { players: Player[] }) => {
+const PlayerList = () => {
+  const [players, setPlayers] = useState<Player[]>([]);
   const [selectedPosition, setSelectedPosition] = useState('all');
 
-  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedPosition(event.target.value);
-  };
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await fetch('http://localhost:3000/api');
+        if (!res.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await res.json();
+
+        setPlayers(data);
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+  
+    fetchData();
+  }, []);
+  
 
   const filteredPlayers = players.filter((player) => {
     return selectedPosition === 'all' || player.position === selectedPosition;
   });
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedPosition(event.target.value);
+  };
 
   return (
     <div className="my-14">
@@ -44,4 +65,3 @@ const PlayerList = ({ players }: { players: Player[] }) => {
 };
 
 export default PlayerList;
-

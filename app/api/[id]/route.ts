@@ -6,7 +6,7 @@ export async function GET(
   ) {
     const player = dataset.find(p => p.id === Number(params.id));
     if (!player) {
-      return Response.json({ message: 'Player not found' });
+        return Response.json({ message: 'Player not found' });
     }
-    return Response.json(player);
+    return Response.json(player)
   }
