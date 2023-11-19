@@ -14,8 +14,8 @@ To get started with this project, follow these steps:
 ### Clone the Repository:
 
 ```bash
-git clone 
-cd
+git clone https://github.com/kibare/player-bio-app.git
+cd player-bio-app
 ```
 
 #### Install Dependencies:
